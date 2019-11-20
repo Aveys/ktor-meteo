@@ -8,7 +8,7 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.gson.*
 import io.ktor.features.*
-
+var id:Int = 0
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
@@ -39,8 +39,14 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
+            val name = call.parameters["name"]
+            val text = if(name == null){
+                "Welcome to Ktor-Meteo !"
+            } else {
+                "$name, Welcome to Ktor-Meteo !"
+            }
 
-            call.respond(mapOf("home" to "Welcome to Ktor-Meteo"))
+            call.respond(mapOf("home" to text ))
         }
         /**
          * Create Station
