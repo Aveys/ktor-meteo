@@ -3,8 +3,10 @@ package com.aveys.controller
 import DateProgression
 import com.aveys.dto.PointsDTO
 import com.aveys.dto.StationsDTO
+import com.aveys.model.Point
 import com.aveys.model.Station
 import toCelsius
+import toFahrenheit
 import java.time.LocalDate
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -43,7 +45,7 @@ class Controller {
         stationDTO.create("Aeroport de Mirabel", "Mirabel")
         stationDTO.create("Aeroport YUL", "Dorval")
         val startDate = LocalDate.of(2019, 10, 1)
-        val endDate = LocalDate.of(2019, 10, 31)
+        val endDate = LocalDate.now()
         for(i in startDate..endDate step 1){
             pointDTO.create(1,i, Random.nextInt(263,283))
             pointDTO.create(2,i, Random.nextInt(263,283))
@@ -52,7 +54,23 @@ class Controller {
     }
 
     fun averageByDay(): Map<LocalDate, Double> {
-        return PointsDTO.getAll().groupBy { it.date }.map { it.key to it.value.map { point -> point.value.toCelsius().roundToInt() }.average() }.toMap()
+        return PointsDTO.getAll().groupBy { it.date }
+            .map { it.key to it.value.map { point -> point.value.toCelsius() }.average() }
+            .toMap()
+    }
+
+    fun listPointsFromStation(startString: String? , unit: String? = "K", id:Int): List<Point> {
+        val startDate = if(startString == null)
+            LocalDate.now().minusDays(10)
+        else
+            LocalDate.parse(startString)
+        val list =  pointDTO.getAll().filter { it.stationNumber == id }.filter { it.date.isAfter(startDate) }.toMutableList()
+        when(unit){
+            "C" -> list.forEach { it.value = it.value.toCelsius() }
+            "F" -> list.forEach { it.value = it.value.toFahrenheit() }
+        }
+        return list
+
     }
 
 

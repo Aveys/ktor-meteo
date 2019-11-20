@@ -91,7 +91,8 @@ fun Application.module(testing: Boolean = false) {
          * param : startDate point from this date to now. Could be null -> 14 more recent
          */
         get("/points/{id}") {
-            TODO()
+            val id = call.parameters["id"] ?: throw IllegalArgumentException("Id could not be null")
+            call.respond(controller.listPointsFromStation(call.parameters["startDate"],call.parameters["unit"], id.toInt() ))
         }
         /**
          * Put points

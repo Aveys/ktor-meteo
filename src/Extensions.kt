@@ -1,12 +1,13 @@
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 const val kelvinToCelsius = 273.15
-fun Int.toCelsius(): Double {
-    return this - kelvinToCelsius
+fun Int.toCelsius(): Int {
+    return (this - kelvinToCelsius).roundToInt()
 }
 
-fun Int.toFahrenheit(): Double {
-    return (this * (9 / 5)) - 459.67
+fun Int.toFahrenheit(): Int {
+    return ((this * (9 / 5)) - 459.67).roundToInt()
 }
 
 class DateIterator(
