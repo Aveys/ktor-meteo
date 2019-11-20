@@ -1,12 +1,7 @@
 package com.aveys
 
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.*
+import module
 import io.ktor.http.*
-import io.ktor.gson.*
-import io.ktor.features.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 
